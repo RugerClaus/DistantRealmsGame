@@ -32,6 +32,11 @@ class System():
         self.input = InputManager(self.window)
         self.save = Save()
         self.load = Load()
+
+        self.game_debug = {
+            "seed": None,
+            "coords": None
+        }
         
     def control_state_toggle(self):
         if not self.control_state.is_state(DEVELOPER_MODE.ON):

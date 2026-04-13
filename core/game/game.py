@@ -11,7 +11,7 @@ class Game:
     def __init__(self, system):
         self.state = GameStateManager()
         self.system = system
-        self.pause_menu = Pause(system, self)
+        self.pause_menu = Pause(system, self,self.quit_to_menu)
         self.world = None
 
     def toggle_pause(self):
@@ -21,13 +21,20 @@ class Game:
         else:
             self.state.set_state(GAMESTATE.PLAYING)
 
-    def resize(self,event_h):
-        self.game_object.resize(event_h)
+    def send_debug_info_to_system(self):
+        self.system.game_debug["seed"] = self.world.seed
+        
+    
+    def remove_debug_info_from_system(self):
+        self.system.game_debug["seed"] = None
+        self.system.game_debug["coords"] = None
 
     def new_game(self):
         self.world = World(self.system)
+        self.send_debug_info_to_system()
         self.system.app_state.set_state(APPSTATE.GAME)
         self.state.set_state(GAMESTATE.PLAYING)
+        self.system.sound.play_music()
 
     def handle_event(self, event):
 
@@ -50,7 +57,6 @@ class Game:
         
         if event.type == self.system.input.video_resize_event():
             self.pause_menu.create_buttons()
-            self.resize(event.h)
 
     def draw(self):
         if self.state.is_state(GAMESTATE.PAUSED):
@@ -62,9 +68,12 @@ class Game:
                 self.world.draw()
 
     def update(self):
-        pass
+        if self.world is not None:
+            self.system.game_debug["coords"] = (int(self.world.player.normalized_x),int(self.world.player.normalized_y))
 
     def quit_to_menu(self):
+        self.remove_debug_info_from_system()
+        self.world = None
         self.system.go_to_menu()
 
     def quit(self):

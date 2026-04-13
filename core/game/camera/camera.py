@@ -4,7 +4,7 @@ class Camera:
         self.offset_y = 0
         self.width = width
         self.height = height
-
+        self.zoom_size = 64
     def update(self, target):
         self.offset_x = target.world_x - self.width // 2
         self.offset_y = target.world_y - self.height // 2

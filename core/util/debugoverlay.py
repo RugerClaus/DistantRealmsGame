@@ -37,7 +37,7 @@ class DebugOverlay:
 
     def draw(self):
         text_color = (255, 255, 255)
-        self.surface.fill((0, 0, 0),0)
+        self.surface.fill((0, 0, 0),50)
         surface_width = self.surface.get_width()
         
         left_x = 10
@@ -54,6 +54,18 @@ class DebugOverlay:
         song_surf = self.font_left.render(song_text, False, text_color)
         self.surface.blit(song_surf, (left_x, left_y))
         left_y += song_surf.get_height() * 1.2
+
+        if self.system.game_debug['seed'] is not None:
+            world_seed_text = f"World Seed: {self.system.game_debug['seed']}"
+            world_seed_surf = self.font_left.render(world_seed_text,False,text_color)
+            self.surface.blit(world_seed_surf,(left_x,left_y))
+            left_y += world_seed_surf.get_height() * 1.2
+
+        if self.system.game_debug["coords"] is not None:
+            coords_text = f"Coordinates: {self.system.game_debug['coords']}"
+            coords_surf = self.font_left.render(coords_text, False, text_color)
+            self.surface.blit(coords_surf, (left_x, left_y))
+            left_y += coords_surf.get_height() * 1.2
 
         right_x = surface_width - 10
         right_y = 10

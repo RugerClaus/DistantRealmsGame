@@ -9,17 +9,20 @@ class Keys:
     def space_key(self):
         return pygame.K_SPACE
     
+    def w_key(self):
+        return pygame.K_w
+
     def a_key(self):
         return pygame.K_a
+    
+    def s_key(self):
+        return pygame.K_s
     
     def d_key(self):
         return pygame.K_d
     
     def h_key(self):
         return pygame.K_h
-    
-    def s_key(self):
-        return pygame.K_s
 
     def seven_key(self):
         return pygame.K_7
