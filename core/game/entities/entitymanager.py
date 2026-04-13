@@ -1,4 +1,3 @@
-import random
 from core.game.entities.type import EntityType
 
 class EntityManager:

@@ -122,12 +122,23 @@ class Window:
         else:
             pygame.draw.rect(surface, color, rect, width)
 
+    def make_rect(self, data):
+        x, y, w, h = data
+        return pygame.Rect(x, y, w, h)
+
             
     def load_image(self,file_like):
-        return pygame.image.load(file_like).convert_alpha()
+        img = pygame.image.load(file_like)
+        img = img.convert_alpha()
+        img = img.copy()
+        return img
 
-    def blit(self,surface,destination):
-        self.screen.blit(surface,destination)
+    def blit(self,surface,destination,area=None):
+        if area is not None:
+            x, y, w, h = area
+            area = pygame.Rect(x, y, w, h)
+
+        self.screen.blit(surface, destination, area)
 
     def get_screen(self):
         return self.screen

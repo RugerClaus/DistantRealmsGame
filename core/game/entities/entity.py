@@ -3,12 +3,11 @@
 from core.game.entities.type import EntityType
 
 class Entity:
-    def __init__(self, x, y, board_surface, type: EntityType, size=None):
-        self.x = x
-        self.y = y
+    def __init__(self, world_x, world_y, system, type: EntityType):
+        self.world_x = world_x
+        self.world_y = world_y
         self.type = type
-        self.size = size
-        self.board_surface = board_surface
+        self.system = system
 
     def update(self):
         pass

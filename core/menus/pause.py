@@ -5,11 +5,11 @@ from core.state.ApplicationLayer.Menu.Pause.statemanager import PauseMenuStateMa
 from core.state.GameLayer.state import GAMESTATE
 
 class Pause(BaseMenu):
-    def __init__(self, system, game, resume_callback):
+    def __init__(self, system, game):
         self.system = system
         self.game = game
         super().__init__(system)
-        self.resume_callback = resume_callback
+        self.resume_callback = game.toggle_pause
         self.state = PauseMenuStateManager()
         self.create_buttons()
 
@@ -56,8 +56,8 @@ class Pause(BaseMenu):
             
     def update(self):
         self.update_toggle_buttons()
-        self.update_toggle_game_buttons()
-        if self.game.game_state.is_state(GAMESTATE.PLAYING):
+        self.update_toggle_buttons()
+        if self.game.state.is_state(GAMESTATE.PLAYING):
             self.back_to_root()
 
     def reset_menu(self):

@@ -4,11 +4,15 @@ from core.state.GameLayer.statemanager import GameStateManager
 from core.state.ApplicationLayer.dev import DEVELOPER_MODE
 from core.state.ApplicationLayer.state import APPSTATE
 from core.menus.pause import Pause
+
+from core.game.world.world import World
+
 class Game:
     def __init__(self, system):
         self.state = GameStateManager()
         self.system = system
-        self.pause_menu = Pause(system, self, self.toggle_pause)
+        self.pause_menu = Pause(system, self)
+        self.world = None
 
     def toggle_pause(self):
         if not self.state.is_state(GAMESTATE.PAUSED):
@@ -19,6 +23,11 @@ class Game:
 
     def resize(self,event_h):
         self.game_object.resize(event_h)
+
+    def new_game(self):
+        self.world = World(self.system)
+        self.system.app_state.set_state(APPSTATE.GAME)
+        self.state.set_state(GAMESTATE.PLAYING)
 
     def handle_event(self, event):
 
@@ -48,14 +57,14 @@ class Game:
             self.pause_menu.update()
             self.pause_menu.draw()
         elif self.state.is_state(GAMESTATE.PLAYING):
-            pass
+            if self.world is not None:
+                self.world.update()
+                self.world.draw()
 
     def update(self):
         pass
 
     def quit_to_menu(self):
-        self.game_object.reset_systems()
-        self.reset_game()
         self.system.go_to_menu()
 
     def quit(self):

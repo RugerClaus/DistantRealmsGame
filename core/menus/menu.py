@@ -69,9 +69,9 @@ class Menu(BaseMenu):
         if self.state.is_state(MENUSTATE.ROOT) and self.updater.state.is_state(UPDATE_STATE.CURRENT):
             self.buttons = [
                 Button(self.system.sound, self.system.window, "New Game", center_x, start_y, btn_width, btn_height,
-                    (255, 255, 255), self.button_action_true_color, None,False),
+                    (255, 255, 255), self.button_action_true_color, self.game.new_game),
                 Button(self.system.sound, self.system.window, "Continue", center_x, start_y + spacing, btn_width, btn_height,
-                    (255, 255, 255), self.button_action_true_color, None,False),
+                    (255, 255, 255), self.button_action_false_color, None,False),
                 Button(self.system.sound, self.system.window, "Load Game", center_x, start_y + spacing * 2, btn_width, btn_height,
                     (255, 255, 255), self.button_action_false_color, None,False),
                 Button(self.system.sound, self.system.window, "Settings", center_x, start_y + spacing * 3, btn_width, btn_height,
@@ -84,9 +84,9 @@ class Menu(BaseMenu):
         if self.state.is_state(MENUSTATE.ROOT) and self.updater.state.is_state(UPDATE_STATE.AVAILABLE):
             self.buttons = [
                 Button(self.system.sound, self.system.window, "New Game", center_x, start_y, btn_width, btn_height,
-                    (255, 255, 255), self.button_action_true_color, None,False),
+                    (255, 255, 255), self.button_action_true_color, self.game.new_game),
                 Button(self.system.sound, self.system.window, "Continue", center_x, start_y + spacing, btn_width, btn_height,
-                    (255, 255, 255), self.button_action_true_color, None,False),
+                    (255, 255, 255), self.button_action_false_color, None,False),
                 Button(self.system.sound, self.system.window, "Load Game", center_x, start_y + spacing * 2, btn_width, btn_height,
                     (255, 255, 255), self.button_action_false_color, None,False),
                 Button(self.system.sound, self.system.window, "Settings", center_x, start_y + spacing * 3, btn_width, btn_height,

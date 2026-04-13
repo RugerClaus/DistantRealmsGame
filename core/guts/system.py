@@ -1,4 +1,4 @@
-import math
+import math,random
 # core systems
 from core.guts.input.inputmanager import InputManager
 from core.guts.audioengine import AudioEngine
@@ -20,6 +20,7 @@ class System():
     def __init__(self):
 
         self.math = math
+        self.random = random
 
         self.app_state = StateManager()
         self.overlay_state = DebugStateManager()
