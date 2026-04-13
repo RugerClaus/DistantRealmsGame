@@ -45,6 +45,8 @@ class LoadingManager:
             
         if not self.system.app_state.is_state(APPSTATE.LOADING):
             self.system.sound.system_sfx_state.set_state(SYSTEM_SFX_STATE.OFF)
+            self.world.player.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.NONE)
+            self.world.player.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.NONE)
         
         if self.system.app_state.is_state(APPSTATE.MAIN_MENU):
             pass
