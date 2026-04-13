@@ -13,6 +13,7 @@ class DebugOverlay:
         self.font_right = FontEngine("debug_state").font
         self.font_right_all = FontEngine("debug_all_state").font
         self.devmodefont = FontEngine(20).font
+        self.opacity = 0
 
     def create_options(self):
         pass
@@ -34,10 +35,14 @@ class DebugOverlay:
             self.system.state_monitor_state.set_state(MONITOR_STATE.GAME)
         elif command == "monitor_all_states":
             self.system.state_monitor_state.set_state(MONITOR_STATE.ALL)
+        elif command == "raise_opacity":
+            self.opacity = min(255, self.opacity + 32)
+        elif command == "lower_opacity":
+            self.opacity = max(0, self.opacity - 32)
 
     def draw(self):
         text_color = (255, 255, 255)
-        self.surface.fill((0, 0, 0),50)
+        self.surface.fill((0, 0, 0),self.opacity)
         surface_width = self.surface.get_width()
         
         left_x = 10
@@ -54,6 +59,10 @@ class DebugOverlay:
         song_surf = self.font_left.render(song_text, False, text_color)
         self.surface.blit(song_surf, (left_x, left_y))
         left_y += song_surf.get_height() * 1.2
+
+        opacity_text = f"Overlay Opacity: {self.opacity}"
+        opacity_surf = self.font_left.render(opacity_text, False, text_color)
+        self.surface.blit(opacity_surf, (left_x, self.system.window.get_height() - opacity_surf.get_height() - 10))
 
         if self.system.game_debug['seed'] is not None:
             world_seed_text = f"World Seed: {self.system.game_debug['seed']}"

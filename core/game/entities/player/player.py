@@ -6,6 +6,7 @@ from core.state.GameLayer.Entities.Player.Movement.Horizontal.state import PLAYE
 
 class Player(Entity):
     def __init__(self, x, y, system, type, camera):
+        self.ignore_input = False
         self.camera = camera
         super().__init__(x, y, system, type)
         self.surface = self.system.window.make_surface(15, 15, True)
@@ -19,6 +20,8 @@ class Player(Entity):
         self.vel_y = 0
         self.normalized_x = 0
         self.normalized_y = 0
+        
+        self.color = (255, 0, 0)
 
     def update(self):
         self.handle_input()
@@ -32,30 +35,34 @@ class Player(Entity):
         self.normalized_y = self.world_y / self.camera.zoom_size
 
     def draw(self):
-        self.surface.fill((0, 0, 0, 0))
-        self.system.window.draw_rect(self.surface, (255, 0, 0), (0, 0, 15, 15))
+        if not self.ignore_input:
+            self.surface.fill((0, 0, 0, 0))
+            self.system.window.draw_rect(self.surface, self.color, (0, 0, 15, 15))
 
-        screen_x = self.system.window.get_width() // 2
-        screen_y = self.system.window.get_height() // 2
+            screen_x = self.system.window.get_width() // 2
+            screen_y = self.system.window.get_height() // 2
 
-        self.system.window.blit(self.surface, (screen_x, screen_y))
+            self.system.window.blit(self.surface, (screen_x, screen_y))
 
     def handle_input(self):
-        keys = self.system.input.get_pressed_keys()
+        if not self.ignore_input:
+            keys = self.system.input.get_pressed_keys()
 
-        if keys[self.system.input.game_controls.move_up] and not keys[self.system.input.game_controls.move_down]:
-            self.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.MOVE_UP)
-        elif keys[self.system.input.game_controls.move_down] and not keys[self.system.input.game_controls.move_up]:
-            self.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.MOVE_DOWN)
-        else:
-            self.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.NONE)
+            if keys[self.system.input.game_controls.move_up] and not keys[self.system.input.game_controls.move_down]:
+                self.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.MOVE_UP)
+            elif keys[self.system.input.game_controls.move_down] and not keys[self.system.input.game_controls.move_up]:
+                self.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.MOVE_DOWN)
+            else:
+                self.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.NONE)
 
-        if keys[self.system.input.game_controls.move_right] and not keys[self.system.input.game_controls.move_left]:
-            self.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.MOVE_RIGHT)
-        elif keys[self.system.input.game_controls.move_left] and not keys[self.system.input.game_controls.move_right]:
-            self.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.MOVE_LEFT)
+            if keys[self.system.input.game_controls.move_right] and not keys[self.system.input.game_controls.move_left]:
+                self.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.MOVE_RIGHT)
+            elif keys[self.system.input.game_controls.move_left] and not keys[self.system.input.game_controls.move_right]:
+                self.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.MOVE_LEFT)
+            else:
+                self.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.NONE)
         else:
-            self.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.NONE)
+            return
 
     def update_velocity(self):
         self.vel_x = 0

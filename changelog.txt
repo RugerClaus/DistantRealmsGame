@@ -4,3 +4,4 @@ Development version Alpha 0.0.1 - 2026-04-13
 - All game info that's needed elsewhere in the program (debug overlay usually) is located in system.game_debug and passed by the game object on initialization
 - Player can move freely in an infinite world with many tile types now.
 - Camera zoom can be adjusted by camera.zoom_size (this is just the tile render size)
+- Second splash screen has a sick world loaded in the background with its own camera, hail modular systems

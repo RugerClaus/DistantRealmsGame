@@ -4,10 +4,10 @@ from core.game.world.tile import Tile
 from core.game.entities.player.player import Player
 
 class World():
-    def __init__(self,system, load_data=None):
+    def __init__(self,system, camera=None, load_data=None):
         self.system = system
         self.load_date = load_data
-        self.camera = Camera(system.window.get_width(),system.window.get_height())
+        self.camera = camera if camera else Camera(system.window.get_width(),system.window.get_height())
         self.tile = Tile(system,self.camera)
         self.player = Player(0,0,system,EntityType.PLAYER,self.camera)
         self.seed = system.random.randint(100000,200000)
