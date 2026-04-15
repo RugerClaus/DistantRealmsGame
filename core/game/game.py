@@ -28,6 +28,7 @@ class Game:
     def remove_debug_info_from_system(self):
         self.system.game_debug["seed"] = None
         self.system.game_debug["coords"] = None
+        self.system.game_debug["tile"] = None
 
     def new_game(self):
         self.world = World(self.system)
@@ -48,15 +49,16 @@ class Game:
                     self.toggle_pause()
         
         if self.state.is_state(GAMESTATE.PLAYING):
-            if event.type == self.system.input.keydown():
-                if self.system.control_state.is_state(DEVELOPER_MODE.ON):
-                    pass
+            if self.system.control_state.is_state(DEVELOPER_MODE.ON):
+                self.world.world_debug.handle_input(event)
 
         elif self.state.is_state(GAMESTATE.PAUSED):
             self.pause_menu.handle_event(event)
         
         if event.type == self.system.input.video_resize_event():
             self.pause_menu.create_buttons()
+            if self.world is not None:
+                self.world.resize()
 
     def draw(self):
         if self.state.is_state(GAMESTATE.PAUSED):
@@ -67,9 +69,17 @@ class Game:
                 self.world.update()
                 self.world.draw()
 
+    def save_game(self):
+        pass
+
+    def load_game(self):
+        pass
+
     def update(self):
         if self.world is not None:
             self.system.game_debug["coords"] = (int(self.world.player.normalized_x),int(self.world.player.normalized_y))
+        if self.world.current_tile is not None:
+            self.system.game_debug["tile"] = self.world.current_tile.upper()
 
     def quit_to_menu(self):
         self.remove_debug_info_from_system()

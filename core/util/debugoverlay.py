@@ -3,9 +3,8 @@ from core.state.ApplicationLayer.dev import DEVELOPER_MODE
 from core.state.ApplicationLayer.Debug.StateMonitor.state import MONITOR_STATE
 
 class DebugOverlay:
-    def __init__(self,system,game,loading):
+    def __init__(self,system,loading):
         self.system = system
-        self.game = game
         self.loading = loading
         self.surface = system.window.draw_overlay((0, 0, 0), 128)
         self.rect = self.surface.get_rect()
@@ -75,6 +74,18 @@ class DebugOverlay:
             coords_surf = self.font_left.render(coords_text, False, text_color)
             self.surface.blit(coords_surf, (left_x, left_y))
             left_y += coords_surf.get_height() * 1.2
+        
+        if self.system.game_debug["tile"] is not None:
+            tile_text = f"Tile: {self.system.game_debug['tile']}"
+            tile_surf = self.font_left.render(tile_text, False, text_color)
+            self.surface.blit(tile_surf, (left_x, left_y))
+            left_y += tile_surf.get_height() * 1.2
+
+        if self.system.game_debug["chunk"] is not None:
+            chunk_text = f"Chunk: {self.system.game_debug['chunk']}"
+            chunk_surf = self.font_left.render(chunk_text, False, text_color)
+            self.surface.blit(chunk_surf, (left_x, left_y))
+            left_y += chunk_surf.get_height() * 1.2
 
         right_x = surface_width - 10
         right_y = 10

@@ -31,8 +31,9 @@ class LoadingManager:
         self.world.player.ignore_input = True
         self.world.player.speed = 500
         
-        for tile in self.world.tile.cache.values():
-            tile.set_alpha(80)
+        self.dimmer = system.window.make_surface(camera.width,camera.height,True)
+        self.dimmer_rect = self.dimmer.get_rect()
+        self.dimmer_color = (0,0,0)
 
     def rescale_assets(self):
         window_w, window_h = self.system.window.get_size()
@@ -68,7 +69,7 @@ class LoadingManager:
         
         self.splash_two.set_alpha(alpha)
 
-        self.system.window.blit(self.splash_two,self.splash_two_rect)
+        
 
         if el >= du:
             self.state.set_state(LOAD_SCREEN_STATE.NONE)
@@ -77,6 +78,12 @@ class LoadingManager:
             self.world.player.move_horz_state.set_state(PLAYER_MOVE_HORZ_STATE.MOVE_LEFT)
             self.world.player.move_vert_state.set_state(PLAYER_MOVE_VERT_STATE.MOVE_UP)
             self.world.update()
+            self.world.draw()
+            self.system.window.blit(self.dimmer,self.dimmer_rect)
+        self.system.window.blit(self.splash_two,self.splash_two_rect)
+        
+        dimmer_alpha = 1 + int(160*self.system.math.sin(el * 0.0002))
+        self.dimmer.fill(self.dimmer_color,dimmer_alpha)
 
     def draw(self):
         current_time = self.system.window.get_current_time()
@@ -89,8 +96,9 @@ class LoadingManager:
         if current_time - self.start_time > 2500:
             self.state.set_state(LOAD_SCREEN_STATE.STUDIO_SPLASH_SCREEN_TWO)
             
-            self.world.update()
-            self.world.draw()
+            
+            
+            
         if self.state.is_state(LOAD_SCREEN_STATE.STUDIO_SPLASH_SCREEN_TWO):
             
             self.play_splash_2_fade_in()   

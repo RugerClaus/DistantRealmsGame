@@ -35,7 +35,9 @@ class System():
 
         self.game_debug = {
             "seed": None,
-            "coords": None
+            "coords": None,
+            "tile": None,
+            "chunk": None,
         }
         
     def control_state_toggle(self):

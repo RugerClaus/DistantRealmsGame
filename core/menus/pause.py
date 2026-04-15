@@ -5,7 +5,7 @@ from core.state.ApplicationLayer.Menu.Pause.statemanager import PauseMenuStateMa
 from core.state.GameLayer.state import GAMESTATE
 
 class Pause(BaseMenu):
-    def __init__(self, system, game,quit_to_menu_callback):
+    def __init__(self, system, game, quit_to_menu_callback):
         self.system = system
         self.game = game
         super().__init__(system)
@@ -25,6 +25,7 @@ class Pause(BaseMenu):
         if self.state.is_state(PAUSE_MENU_STATE.ROOT):
             self.buttons = [
                 Button(self.system.sound, self.system.window, "Resume", center_x, start_y, btn_width, btn_height, (255, 255, 255), self.button_action_true_color, self.resume_callback),
+                Button(self.system.sound, self.system.window, "Save Game", center_x, start_y + spacing * 1, btn_width, btn_height, (255, 255, 255), self.button_action_true_color, self.game.save_game),
                 Button(self.system.sound, self.system.window, "Main Menu", center_x, start_y + spacing * 1, btn_width, btn_height, (255, 255, 255), self.button_action_true_color, self.quit_to_menu_callback),
                 Button(self.system.sound, self.system.window, "Settings", center_x, start_y + spacing * 2, btn_width, btn_height, (255, 255, 255), self.button_action_true_color, self.go_to_settings),
                 Button(self.system.sound, self.system.window, "Quit", center_x, start_y + spacing * 3, btn_width, btn_height, (255, 255, 255), self.button_action_true_color, self.system.quit),

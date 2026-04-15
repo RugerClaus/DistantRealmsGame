@@ -37,6 +37,9 @@ class Window:
         
     def transform_scale(self, original_surface, new_surface_width, new_surface_height):
         return pygame.transform.scale(original_surface, (new_surface_width, new_surface_height))
+
+    def transform_smoothscale(self,original,newW,newH):
+        return pygame.transform.smoothscale(original,(newW,newH))
     
     def toggle_fullscreen(self):
         if not self.fullscreen:
@@ -89,9 +92,11 @@ class Window:
         overlay.fill((*color, alpha))
         return overlay
     
-    def draw_line(self,point_a,point_b,color):
+    def draw_line(self,point_a,point_b,color,width=None):
         if isinstance(color,tuple):
             pygame.draw.line(self.get_screen(),color,point_a,point_b)
+            if width is not None:
+                pygame.draw.line(self.get_screen(),color,point_a,point_b,width)
         else:
             log_error("color must be a tuple")
 

@@ -12,12 +12,13 @@
 ```bash
 python3 -m venv virtualenv
 source virtualenv/bin/activate
-pip install pygame-ce pyinstaller mutagen requests
+pip install pygame-ce pyinstaller mutagen requests numpy opensimplex
 python3 setup.py
 python3 main.py --dev
 ```
 **NOTE:** passing the flag --dev enables developer mode by default on startup
 **NOTE:** `setup.py` is absolutely **ESSENTIAL** to run the program.
+
 
 **FEATURE ADDITIONS**
 

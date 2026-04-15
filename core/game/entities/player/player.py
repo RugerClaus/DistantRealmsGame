@@ -5,11 +5,13 @@ from core.state.GameLayer.Entities.Player.Movement.Horizontal.statemanager impor
 from core.state.GameLayer.Entities.Player.Movement.Horizontal.state import PLAYER_MOVE_HORZ_STATE
 
 class Player(Entity):
-    def __init__(self, x, y, system, type, camera):
+    def __init__(self, x, y, system, type, camera,collision):
         self.ignore_input = False
         self.camera = camera
+        self.collision_check = collision
+        self.size = camera.zoom_size // 2
         super().__init__(x, y, system, type)
-        self.surface = self.system.window.make_surface(15, 15, True)
+        self.surface = self.system.window.make_surface(self.size, self.size, True)
         self.rect = self.surface.get_rect()
         self.move_vert_state = PlayerVerticalMoveStateManager()
         self.move_horz_state = PlayerHorizontalMoveStateManager()
@@ -25,19 +27,33 @@ class Player(Entity):
 
     def update(self):
         self.handle_input()
-
         self.update_velocity()
 
         delta = self.system.window.get_delta_time()
-        self.world_x += self.vel_x * delta
-        self.world_y += self.vel_y * delta
+        new_x = self.world_x + self.vel_x * delta
+        new_y = self.world_y + self.vel_y * delta
+
+        if self.collision_check:
+            if not self.collision_check(new_x, self.world_y, self.rect):
+                self.world_x = new_x
+            else:
+                self.vel_x = 0
+
+            if not self.collision_check(self.world_x, new_y, self.rect):
+                self.world_y = new_y
+            else:
+                self.vel_y = 0
+        else:
+            self.world_x = new_x
+            self.world_y = new_y
+
         self.normalized_x = self.world_x / self.camera.zoom_size
         self.normalized_y = self.world_y / self.camera.zoom_size
 
     def draw(self):
         if not self.ignore_input:
             self.surface.fill((0, 0, 0, 0))
-            self.system.window.draw_rect(self.surface, self.color, (0, 0, 15, 15))
+            self.system.window.draw_rect(self.surface, self.color, (0, 0, self.size, self.size))
 
             screen_x = self.system.window.get_width() // 2
             screen_y = self.system.window.get_height() // 2

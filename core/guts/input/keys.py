@@ -53,3 +53,6 @@ class Keys:
     
     def return_key(self):
         return pygame.K_RETURN
+    
+    def backtick(self):
+        return pygame.K_BACKQUOTE

@@ -5,6 +5,7 @@ class Tile():
         self.camera = camera
         self.tile_size = 32
         self.image = system.window.load_image(helper.asset("atlas"))
+        
         self.atlas_tile_size = 16
         self.render_tile_size = camera.zoom_size
         
@@ -24,10 +25,10 @@ class Tile():
         self.tiles[name] = (grid_x, grid_y)
 
         rect = self.get_rect(name)
-        tile = self.image.subsurface(rect)
-        tile = self.system.window.transform_scale(tile, 128, 128)
+        tile_surface = self.image.subsurface(rect).copy()
+        tile_surface = self.system.window.transform_smoothscale(tile_surface, self.camera.zoom_size, self.camera.zoom_size).convert_alpha()
 
-        self.cache[name] = tile
+        self.cache[name] = tile_surface
         
     def get_visible(self):
         screen_w = self.system.window.get_width()
