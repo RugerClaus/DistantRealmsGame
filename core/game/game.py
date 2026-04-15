@@ -22,13 +22,13 @@ class Game:
             self.state.set_state(GAMESTATE.PLAYING)
 
     def send_debug_info_to_system(self):
-        self.system.game_debug["seed"] = self.world.seed
+        self.system.runtime_inspector["seed"] = self.world.seed
         
     
     def remove_debug_info_from_system(self):
-        self.system.game_debug["seed"] = None
-        self.system.game_debug["coords"] = None
-        self.system.game_debug["tile"] = None
+        self.system.runtime_inspector["seed"] = None
+        self.system.runtime_inspector["coords"] = None
+        self.system.runtime_inspector["tile"] = None
 
     def new_game(self):
         self.world = World(self.system)
@@ -70,16 +70,25 @@ class Game:
                 self.world.draw()
 
     def save_game(self):
-        pass
+        data = self.world.serialize()
+        self.system.save.write_game_save(data)
+        print("saved game!")
 
     def load_game(self):
-        pass
+        load_data_dict = self.system.load.load_game_save()
+        self.world = World(self.system,None,load_data=load_data_dict)
+        self.send_debug_info_to_system()
+        self.system.app_state.set_state(APPSTATE.GAME)
+        self.state.set_state(GAMESTATE.PLAYING)
+        self.system.sound.play_music()
+
+
 
     def update(self):
         if self.world is not None:
-            self.system.game_debug["coords"] = (int(self.world.player.normalized_x),int(self.world.player.normalized_y))
+            self.system.runtime_inspector["coords"] = (int(self.world.player.normalized_x),int(self.world.player.normalized_y))
         if self.world.current_tile is not None:
-            self.system.game_debug["tile"] = self.world.current_tile.upper()
+            self.system.runtime_inspector["tile"] = self.world.current_tile.upper()
 
     def quit_to_menu(self):
         self.remove_debug_info_from_system()

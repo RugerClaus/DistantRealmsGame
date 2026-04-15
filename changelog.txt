@@ -1,11 +1,3 @@
-Development version Alpha 0.0.1 - 2026-04-13
-- Distant Realms Game first deployment 
-- Added procedurally generated world
-- All game info that's needed elsewhere in the program (debug overlay usually) is located in system.game_debug and passed by the game object on initialization
-- Player can move freely in an infinite world with many tile types now.
-- Camera zoom can be adjusted by camera.zoom_size (this is just the tile render size)
-- Second splash screen has a sick world loaded in the background with its own camera, hail modular systems
-
 Development version Alpha 0.0.2 - 2026-04-15
 - Added chunking
 - Added multiple tile layers (structures, ground)
@@ -14,3 +6,4 @@ Development version Alpha 0.0.2 - 2026-04-15
 - Added World Debug system that can draw chunk lines (black for the current chunk), and highlight structure tiles
 - Added Opacity for debug overlay
 - Added non-functional save button in pause menu
+- Integrated callable save file system with loading capabilities

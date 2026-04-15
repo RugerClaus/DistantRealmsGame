@@ -8,22 +8,22 @@ from core.game.entities.player.player import Player
 class World():
     def __init__(self, system, camera=None, load_data=None):
         self.system = system
-        self.load_date = load_data
         self.camera = camera if camera else Camera(system.window.get_width(), system.window.get_height())
 
-        
+        if load_data is not None:
+            self.player = Player(load_data["player_world_x"],load_data["player_world_y"], system, EntityType.PLAYER, self.camera,self.check_player_collision)
+            self.seed = load_data["seed"]
+        else:
+            self.player = Player(0,0,system, EntityType.PLAYER, self.camera,self.check_player_collision)
+            self.seed = system.random.randint(100000, 200000)
+
         self.ground_layer = Layer(system, self.camera)
         self.structure_layer = Layer(system, self.camera)
-
-        self.player = Player(10 * self.camera.zoom_size,40 *self.camera.zoom_size , system, EntityType.PLAYER, self.camera,self.check_player_collision)
-
-        self.chunk_size = 16
-
-        self.seed = system.random.randint(100000, 200000)
         self.h_noise = OpenSimplex(self.seed)
         self.moist_noise = OpenSimplex(self.seed + 1)
         self.plant_noise = OpenSimplex(self.seed + 2)
-
+        
+        self.chunk_size = 16
         self.current_tile = None
 
         self.ground_layer.register("grass", 0, 1)
@@ -34,9 +34,16 @@ class World():
         self.structure_layer.register("rock", 5, 1, collidable=True)
 
         self.world_debug = WorldDebug(system,self.camera,self)
-
+        
         self.tile_cache = {}
         self.chunk_cache = {}
+
+    def serialize(self):
+        return {
+            "player_world_x": self.player.world_x,
+            "player_world_y": self.player.world_y,
+            "seed": self.seed
+        }
 
     def check_player_collision(self, new_world_x, new_world_y, player_rect):
         tile_size = self.camera.zoom_size
@@ -108,7 +115,6 @@ class World():
                 global_x = chunk_x * self.chunk_size + local_x
                 global_y = chunk_y * self.chunk_size + local_y
 
-                # Only place on grass
                 h, m, p = self.world_eval(global_x, global_y)
                 tile_type = "grass" if h >= -0.15 or m > 0.3 else "sand"
                 if tile_type != "grass":

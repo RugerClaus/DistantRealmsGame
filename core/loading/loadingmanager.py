@@ -25,13 +25,13 @@ class LoadingManager:
         self.state.set_state(LOAD_SCREEN_STATE.STUDIO_SPLASH_SCREEN_ONE)
 
         # Paralax splash screen
-        camera = Camera(self.system.window.get_width(),self.system.window.get_height())
-        camera.zoom_size = 128
-        self.world = World(self.system,camera)
+        self.camera = Camera(self.system.window.get_width(),self.system.window.get_height())
+        self.camera.zoom_size = 128
+        self.world = World(self.system,self.camera)
         self.world.player.ignore_input = True
         self.world.player.speed = 500
         
-        self.dimmer = system.window.make_surface(camera.width,camera.height,True)
+        self.dimmer = system.window.make_surface(self.camera.width,self.camera.height,True)
         self.dimmer_rect = self.dimmer.get_rect()
         self.dimmer_color = (0,0,0)
 
@@ -39,6 +39,11 @@ class LoadingManager:
         window_w, window_h = self.system.window.get_size()
         self.splash_one_rect = self.splash_one.get_rect(center=(window_w // 2, window_h // 2 - 50))
         self.splash_two_rect = self.splash_two.get_rect(center=(window_w // 2, window_h // 2 - 50))
+        self.dimmer = self.system.window.make_surface(
+        self.system.window.get_width(),
+        self.system.window.get_height(),
+        True
+    )
 
     def update(self):
         if self.state.is_state(LOAD_SCREEN_STATE.NONE):

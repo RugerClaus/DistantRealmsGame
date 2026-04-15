@@ -5,6 +5,8 @@ from core.guts.audioengine import AudioEngine
 from core.guts.window import Window
 from core.guts.save.save import Save
 from core.guts.save.load import Load
+from core.game.runtime_inspector import runtime_inspector
+from core.game.save_schema import schema
 
 # state systems
 from core.state.ApplicationLayer.statemanager import StateManager
@@ -30,15 +32,11 @@ class System():
         self.window = Window()
         self.sound = AudioEngine(self.app_state)
         self.input = InputManager(self.window)
-        self.save = Save()
+        self.save_schema = schema
+        self.save = Save(self.save_schema)
         self.load = Load()
 
-        self.game_debug = {
-            "seed": None,
-            "coords": None,
-            "tile": None,
-            "chunk": None,
-        }
+        self.runtime_inspector = runtime_inspector
         
     def control_state_toggle(self):
         if not self.control_state.is_state(DEVELOPER_MODE.ON):

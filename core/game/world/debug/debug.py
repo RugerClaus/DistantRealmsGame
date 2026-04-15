@@ -75,7 +75,7 @@ class WorldDebug():
         player_chunk_x = int(player.normalized_x) // self.chunk_size
         player_chunk_y = int(player.normalized_y) // self.chunk_size
 
-        self.system.game_debug["chunk"] = (player_chunk_x,player_chunk_y)
+        self.system.runtime_inspector["chunk"] = (player_chunk_x,player_chunk_y)
 
         for x in range(start_x, end_x):
             for y in range(start_y, end_y):
