@@ -57,9 +57,12 @@ class BaseMenu:
             rect = surf.get_rect(center=(self.system.window.get_width() // 2, self.system.window.get_height() // 4))
             self.system.window.blit(surf, rect)
 
-    def draw_update_text(self):
+    def draw_update_text(self,other_text=None):
         text_color = (255, 128,0)
-        surf = self.query_font.render("Update Available!", False, text_color)
+        if other_text is not None:
+            surf = self.query_font.render(f"{other_text}", False, text_color)
+        else:
+            surf = self.query_font.render("Update Available!", False, text_color)
         rect = surf.get_rect(center=(self.system.window.get_width() // 2, self.system.window.get_height() // 3.5))
         self.system.window.blit(surf, rect)
 

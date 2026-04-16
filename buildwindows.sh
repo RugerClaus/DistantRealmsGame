@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-APP_NAME="snowblitz"
+APP_NAME="distantrealms"
 MAIN="main.py"
 UPDATER_MAIN="updater.py"
 UPDATER_NAME="updater"

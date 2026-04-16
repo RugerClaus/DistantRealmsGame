@@ -252,6 +252,7 @@ class Menu(BaseMenu):
         if self.state.is_state(MENUSTATE.ROOT) and self.updater.state.is_state(UPDATE_STATE.CURRENT):
             self.set_title("")
             self.draw_username_text(self.system.load.read_constant("username"))
+            self.draw_update_text(f"{self.system.save_telemetry}")
             self.system.window.blit(self.title_image, self.title_rect)
         
         if self.state.is_state(MENUSTATE.ROOT) and self.updater.state.is_state(UPDATE_STATE.AVAILABLE):

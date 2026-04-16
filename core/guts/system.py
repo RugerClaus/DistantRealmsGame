@@ -32,11 +32,14 @@ class System():
         self.window = Window()
         self.sound = AudioEngine(self.app_state)
         self.input = InputManager(self.window)
+
         self.save_schema = schema
+        
         self.save = Save(self.save_schema)
         self.load = Load()
 
-        self.runtime_inspector = runtime_inspector
+        self.runtime_inspector = runtime_inspector # this is an observer
+        self.save_telemetry = "" # this is actual logic
         
     def control_state_toggle(self):
         if not self.control_state.is_state(DEVELOPER_MODE.ON):

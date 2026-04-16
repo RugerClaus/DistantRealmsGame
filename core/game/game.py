@@ -30,13 +30,6 @@ class Game:
         self.system.runtime_inspector["coords"] = None
         self.system.runtime_inspector["tile"] = None
 
-    def new_game(self):
-        self.world = World(self.system)
-        self.send_debug_info_to_system()
-        self.system.app_state.set_state(APPSTATE.GAME)
-        self.state.set_state(GAMESTATE.PLAYING)
-        self.system.sound.play_music()
-
     def handle_event(self, event):
 
         if event.type == self.system.input.keydown():
@@ -69,18 +62,32 @@ class Game:
                 self.world.update()
                 self.world.draw()
 
+    def new_game(self):
+        self.system.save_telemetry = ""
+        self.world = World(self.system)
+        self.send_debug_info_to_system()
+        self.system.app_state.set_state(APPSTATE.GAME)
+        self.state.set_state(GAMESTATE.PLAYING)
+        self.system.sound.play_music()
+
     def save_game(self):
+        self.system.save_telemetry = ""
         data = self.world.serialize()
         self.system.save.write_game_save(data)
         print("saved game!")
 
     def load_game(self):
         load_data_dict = self.system.load.load_game_save()
-        self.world = World(self.system,None,load_data=load_data_dict)
-        self.send_debug_info_to_system()
-        self.system.app_state.set_state(APPSTATE.GAME)
-        self.state.set_state(GAMESTATE.PLAYING)
-        self.system.sound.play_music()
+        if load_data_dict is not None:
+            self.system.save_telemetry = ""
+            self.world = World(self.system,None,load_data=load_data_dict)
+            self.send_debug_info_to_system()
+            self.system.app_state.set_state(APPSTATE.GAME)
+            self.state.set_state(GAMESTATE.PLAYING)
+            self.system.sound.play_music()
+        else:
+            self.system.save_telemetry = "No Save File Found!"
+            return None
 
 
 
@@ -92,6 +99,7 @@ class Game:
 
     def quit_to_menu(self):
         self.remove_debug_info_from_system()
+        self.system.save_telemetry = ""
         self.world = None
         self.system.go_to_menu()
 
