@@ -3,7 +3,7 @@ import platform
 config = {
     "TITLE": "Distant Realms Alpha",
     "AUTHORS": ["Roger Falck"],
-    "VERSION": "0.0.2",
+    "VERSION": "0.0.3",
     "OS": platform.system(),
     "UPDATE_ZIP_NAME": "distantrealms_update_latest.zip",
     "UPDATER_WINDOWS": "updater.exe",

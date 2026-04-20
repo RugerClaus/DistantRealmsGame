@@ -1,4 +1,3 @@
-import webbrowser
 from core.menus.basemenu import BaseMenu
 from core.menus.usercreator import UserCreator
 from core.ui.button import Button

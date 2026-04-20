@@ -1,5 +1,6 @@
 from core.game.entities.entity import Entity
 from core.game.entities.player.atlas import PlayerAtlas
+from core.game.entities.player.UI import PlayerUIManager
 from core.state.GameLayer.Entities.Player.Movement.Vertical.statemanager import PlayerVerticalMoveStateManager
 from core.state.GameLayer.Entities.Player.Movement.Vertical.state import PLAYER_MOVE_VERT_STATE
 from core.state.GameLayer.Entities.Player.Movement.Horizontal.statemanager import PlayerHorizontalMoveStateManager
@@ -21,8 +22,8 @@ class Player(Entity):
         self.move_horz_state = PlayerHorizontalMoveStateManager()
         self.life_state = PlayerLifeStateManager()
 
-        self.health = 100
-
+        self.max_health = 100
+        self.health = self.max_health
         self.speed = 1000
 
         self.vel_x = 0
@@ -39,10 +40,17 @@ class Player(Entity):
         }
         self.current_animation = self.animations["idle"]
         self.rect = None
+
+        self.ui = PlayerUIManager(system,self)
         
-    def handle_collisions(self,structure_tile):
-        if structure_tile == "bush":
+    def handle_collisions(self,tile_data):
+        if tile_data["type"] == "bush":
             self.health -= 1
+        elif tile_data["type"] == "rock":
+            print("hitting rock")
+    
+        elif tile_data["is_entrance"]:
+            print("entering structure: ",tile_data["building"])
 
     def respawn(self):
         self.life_state.set_state(PLAYER_LIFE_STATE.ALIVE)
@@ -82,7 +90,6 @@ class Player(Entity):
         self.normalized_y = self.world_y / self.camera.zoom_size
 
         self.current_animation.update()
-        print(self.health)
 
     def draw(self):
         if not self.ignore_input:
@@ -97,6 +104,7 @@ class Player(Entity):
             
 
             self.system.window.blit(final,self.rect)
+            self.ui.draw()
 
     def handle_input(self):
         if not self.ignore_input:

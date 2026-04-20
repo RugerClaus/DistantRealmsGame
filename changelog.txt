@@ -1,9 +1,6 @@
-Development version Alpha 0.0.2 - 2026-04-15
-- Added chunking
-- Added multiple tile layers (structures, ground)
-- Added Simplex Noise for smooth terrain generation
-- Added game_debug dictionary on System for passing around debugging info for the game (player world coords, chunk coords, current tile)
-- Added World Debug system that can draw chunk lines (black for the current chunk), and highlight structure tiles
-- Added Opacity for debug overlay
-- Added non-functional save button in pause menu
-- Integrated callable save file system with loading capabilities
+Development version Alpha 0.0.3 - 2026-04-15
+- Added structured structure generation
+- Added 2 types of structures to test and structures generate a maximum of 1 every 5 chunks
+- Added player sprite and animations
+- Added player UI and health system (bushes are the temporary damaging tile)
+- Changed camera zoom perspective for testing

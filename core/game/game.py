@@ -52,6 +52,8 @@ class Game:
             self.pause_menu.create_buttons()
             if self.world is not None:
                 self.world.resize()
+                if self.world.player is not None:
+                    self.world.player.ui.resize()
 
     def draw(self):
         if self.state.is_state(GAMESTATE.PAUSED):
