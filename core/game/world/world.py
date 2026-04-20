@@ -62,6 +62,7 @@ class World():
                 if structure_tile and self.structure_layer.is_collidable(structure_tile):
                     tile_rect = self.system.window.Rect(x * tile_size, y * tile_size, tile_size, tile_size)
                     if test_rect.colliderect(tile_rect):
+                        self.player.handle_collisions(structure_tile)
                         return True
         return False
 

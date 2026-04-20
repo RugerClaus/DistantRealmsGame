@@ -17,8 +17,14 @@ def asset(asset):
         return "assets/images/build/windows.ico"
     elif asset == "atlas":
         return "assets/images/main/atlas.png"
-    elif asset == "clock":
-        return "assets/images/main/clock.png"
+    elif asset == "playeridle":
+        return "assets/images/main/player/idle.png"
+    elif asset == "playeridleleft":
+        return "assets/images/main/player/idleleft.png"
+    elif asset == "playerright":
+        return "assets/images/main/player/walkright.png"
+    elif asset == "playerleft":
+        return "assets/images/main/player/walkleft.png"
     
 def log_state_transition(from_state, to_state, state_type, ticks=None, sub_dir=None, log_file=None):
     log_data = {

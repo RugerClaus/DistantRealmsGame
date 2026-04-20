@@ -1,16 +1,15 @@
-# if i ever want to mess with global entities
-
+from core.game.entities.animations import Animation
 from core.game.entities.type import EntityType
 
 class Entity:
-    def __init__(self, world_x, world_y, system, type: EntityType):
+    def __init__(self, world_x, world_y, type: EntityType, size=None):
         self.world_x = world_x
         self.world_y = world_y
+        self.animation = Animation
         self.type = type
-        self.system = system
+        self.animations = {}
+        self.current_animation = None
 
     def update(self):
-        pass
-
-    def draw(self):
-        pass
+        if self.current_animation is not None:
+            self.current_animation.update()
